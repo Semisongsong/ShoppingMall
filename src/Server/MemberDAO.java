@@ -16,7 +16,7 @@ public class MemberDAO {
 	private Statement stmt;
 	private ResultSet rs;
 	private MemberDTO d = null;
-	private static ManagementDAO DAOobj;
+	private static MemberDAO DAOobj;
 
 	private MemberDAO() {
 	}
@@ -33,7 +33,7 @@ public class MemberDAO {
 
 	public static MemberDAO getInstance() {
 		if (DAOobj == null) {
-			DAOobj = new ManagementDAO();
+			DAOobj = new MemberDAO();
 		}
 		return DAOobj;
 	}

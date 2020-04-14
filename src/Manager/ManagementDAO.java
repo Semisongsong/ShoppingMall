@@ -17,7 +17,7 @@ public class ManagementDAO {
 	ManagementDTO d = null;
 	private static ManagementDAO DAOobj;
 
-	ManagementDAO() {
+	public ManagementDAO() {
 	}
 
 	static {
