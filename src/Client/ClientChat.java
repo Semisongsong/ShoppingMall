@@ -12,12 +12,13 @@ public class ClientChat {
 	private InputStream reMsg = null;
 	private OutputStream sendMsg = null;
 	private String[] chk = null;
+	String nnn = "";
 	Scanner in = new Scanner(System.in);
 
 	ClientChat(Socket withServer) {
 		this.withServer = withServer;
 		start();
-		streamSet(chk);
+		streamSet(chk,nnn);
 		// new Login();
 		// send();
 	}
@@ -70,18 +71,20 @@ public class ClientChat {
 //		}).start();
 	}
 
-	public void streamSet(String[] check) {
+	public void streamSet(String[] check, String mm) {
 		try {
 			if (check != null) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(baos);
 				oos.writeObject(check);
+				
 
 				byte[] bowl = baos.toByteArray();
 
 				sendMsg = withServer.getOutputStream();
 
 				sendMsg.write(bowl);
+				sendMsg.write(mm.getBytes());
 				System.out.println("보내기 완료");
 			}
 

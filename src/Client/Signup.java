@@ -30,7 +30,7 @@ public class Signup extends JFrame {
 	private JTextField tfName;
 	private JTextField tfAddress;
 	private JTextField tfPhone;
-	private static ClientChat ch =null;
+	private static ClientChat ch = null;
 
 	/**
 	 * Launch the application.
@@ -49,7 +49,7 @@ public class Signup extends JFrame {
 	}
 
 	public Signup(ClientChat ch) {
-		this.ch=ch;
+		this.ch = ch;
 		createjlabel();
 		createtxtfield();
 		createbtn();
@@ -223,12 +223,17 @@ public class Signup extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//MemberDTO member = new MemberDTO();
-				//member.setId(tfUsername.getText());
+				// MemberDTO member = new MemberDTO();
+				// member.setId(tfUsername.getText());
 
 				try {
-					//MemberDAO dao = MemberDAO.getInstance();
-					//Boolean result = dao.idchk(member);
+					String[] check = {tfUsername.getText()};
+					String mm ="check";
+					
+					ch.streamSet(check,mm);
+					
+					// MemberDAO dao = MemberDAO.getInstance();
+					// Boolean result = dao.idchk(member);
 //					if (result) {
 //						JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
 //						setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -256,17 +261,21 @@ public class Signup extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//MemberDTO member = new MemberDTO();
-				//member.setId(tfUsername.getText());
-				//member.setName(tfName.getText());
-				//member.setPwd(tfpwd.getText());
-				//member.setAdr(tfAddress.getText());
-				//member.setCell(tfPhone.getText());
-				
-				String[] check= {tfUsername.getText(),tfName.getText(),tfpwd.getText(),tfAddress.getText(),tfPhone.getText()};
-				ch.streamSet(check);
-				//MemberDAO dao = MemberDAO.getInstance();
-				//Boolean result = dao.InsertMember(member);
+				// MemberDTO member = new MemberDTO();
+				// member.setId(tfUsername.getText());
+				// member.setName(tfName.getText());
+				// member.setPwd(tfpwd.getText());
+				// member.setAdr(tfAddress.getText());
+				// member.setCell(tfPhone.getText());
+
+				String[] check = { tfUsername.getText(), 
+						tfName.getText(),
+						tfpwd.getText(), 
+						tfAddress.getText(),
+						tfPhone.getText()
+						};
+				String mm ="join";
+				ch.streamSet(check,mm);
 
 //				if (result) {
 //					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");

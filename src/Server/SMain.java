@@ -13,7 +13,7 @@ public class SMain {
 		ServerSocket serverS = null;
 		Socket withClient = null;
 		serverS = new ServerSocket();
-		serverS.bind(new InetSocketAddress("10.0.0.127", 12345));
+		serverS.bind(new InetSocketAddress("1.247.118.32", 12345));
 
 		ArrayList<Socket> cList = new ArrayList<>();
 		ServerCenter sc =new ServerCenter();

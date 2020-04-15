@@ -19,6 +19,7 @@ public class ServerChat extends Thread {
 
 	ServerChat(Socket withClient,ServerCenter sc) {
 		this.withClient = withClient;
+		this.sc=sc;
 		// streamSet();
 	}
 
@@ -37,13 +38,18 @@ public class ServerChat extends Thread {
 					while (true) {
 
 						reMsg = withClient.getInputStream();
-
+						
 						byte[] reBuffer = new byte[1024];
 						reMsg.read(reBuffer);
-
+						
+						String msg = new String(reBuffer);
+						msg = msg.trim();
+						System.out.println("구별자 왔는지 확인 : "+msg);
+						
 						ByteArrayInputStream bais = new ByteArrayInputStream(reBuffer);
 
 						ObjectInputStream ois = new ObjectInputStream(bais);
+						
 
 						Object o = ois.readObject();
 						if (o != null) {
@@ -55,6 +61,7 @@ public class ServerChat extends Thread {
 							String txt = "정상접속 되었습니다.";
 							sendMsg = withClient.getOutputStream();
 							sendMsg.write(txt.getBytes());
+							sc.select(check,msg);
 						}
 
 

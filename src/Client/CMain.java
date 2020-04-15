@@ -9,7 +9,7 @@ public class CMain {
 
 	public static void main(String[] args) throws Exception {
 		Socket withServer = null;
-		withServer = new Socket("10.0.0.127",12345);
+		withServer = new Socket("1.247.118.32",12345);
 		System.out.println("아이피랑 포트넘버 생성");
 		new ClientChat(withServer);
 		//new Login();
