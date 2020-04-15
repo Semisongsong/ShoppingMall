@@ -49,21 +49,28 @@ public class DAOCenter implements DAOInterface {
 		}
 	}
 
-	public void whichone(Object objectMember, String m) {
-
-		
-		switch (m) {
-
-		case "member":
-			
-			break;
-		case "goods":
-			break;
-		case "cart":
-			break;
-		case "order":
-			break;
+	public void whichone(Object objectMember, Object m) {
+		System.out.println("디에이오센터에 오신걸 환영합니다.");
+		String ch = String.valueOf(m);
+		if(ch.equals("join")) {
+			MemberDAO dao = MemberDAO.getInstance();
+			dao.InsertMember(objectMember);
+			System.out.println("왔다");
 		}
+//		switch (ch) {
+//
+//		case "join":
+//			MemberDAO dao = MemberDAO.getInstance();
+//			dao.InsertMember(objectMember);
+//			System.out.println("왔다");
+//			break;
+//		case "goods":
+//			break;
+//		case "cart":
+//			break;
+//		case "order":
+//			break;
+//		}
 
 	}
 

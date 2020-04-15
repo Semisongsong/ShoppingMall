@@ -230,7 +230,7 @@ public class Signup extends JFrame {
 					String[] check = {tfUsername.getText()};
 					String mm ="check";
 					
-					ch.streamSet(check,mm);
+					//ch.streamSet(check,mm);
 					
 					// MemberDAO dao = MemberDAO.getInstance();
 					// Boolean result = dao.idchk(member);

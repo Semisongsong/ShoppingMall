@@ -18,7 +18,7 @@ public class ClientChat {
 	ClientChat(Socket withServer) {
 		this.withServer = withServer;
 		start();
-		streamSet(chk,nnn);
+		streamSet(chk, nnn);
 		// new Login();
 		// send();
 	}

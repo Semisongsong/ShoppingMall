@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
-
 public class ServerChat extends Thread {
 	private Socket withClient = null;
 	private InputStream reMsg = null;
@@ -16,10 +15,11 @@ public class ServerChat extends Thread {
 	private String id = null;
 	private String[] check = null;
 	private ServerCenter sc = null;
+	String msg = null;
 
-	ServerChat(Socket withClient,ServerCenter sc) {
+	ServerChat(Socket withClient, ServerCenter sc) {
 		this.withClient = withClient;
-		this.sc=sc;
+		this.sc = sc;
 		// streamSet();
 	}
 
@@ -38,40 +38,37 @@ public class ServerChat extends Thread {
 					while (true) {
 
 						reMsg = withClient.getInputStream();
-						
 						byte[] reBuffer = new byte[1024];
 						reMsg.read(reBuffer);
-						
-						String msg = new String(reBuffer);
-						msg = msg.trim();
-						System.out.println("구별자 왔는지 확인 : "+msg);
-						
+
+//						String msg = new String(reBuffer);
+//						msg = msg.trim();
+//						System.out.println("구별자 왔는지 확인 : "+msg);
+//						
 						ByteArrayInputStream bais = new ByteArrayInputStream(reBuffer);
 
 						ObjectInputStream ois = new ObjectInputStream(bais);
-						
 
 						Object o = ois.readObject();
 						if (o != null) {
 							check = (String[]) o;
+							String msg = String.valueOf(reBuffer);
+							System.out.println("메세지 온거 형변환해서 확인중 : "+msg);
 							for (int i = 0; i < check.length; i++) {
 								System.out.println(check[i]);
-								id=check[0];
+								id = check[0];
 							}
 							String txt = "정상접속 되었습니다.";
 							sendMsg = withClient.getOutputStream();
 							sendMsg.write(txt.getBytes());
-							sc.select(check,msg);
+							sc.select(check, msg);
+
 						}
-
-
 						InetAddress c_ip = withClient.getInetAddress();
 						String ip = c_ip.getHostAddress();
-						
+
 						System.out.println(id + "님 로그인 (" + ip + ")");
 					}
-
-
 
 				} catch (Exception e) {
 					// TODO: handle exception
