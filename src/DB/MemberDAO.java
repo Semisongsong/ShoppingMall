@@ -36,7 +36,7 @@ public class MemberDAO {
 	private boolean connect() {
 		boolean result = false;
 		try {
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:ooo", "system", "11111111");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "system", "11111111");
 			result = true;
 		} catch (Exception e) {
 			// TODO: handle exception

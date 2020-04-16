@@ -41,7 +41,7 @@ public class DAOCenter implements DAOInterface {
 
 	private void connect() {
 		try {
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:ooo", "system", "11111111");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "system", "11111111");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
