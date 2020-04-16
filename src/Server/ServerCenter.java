@@ -6,18 +6,28 @@ import DB.DAOCenter;
 
 public class ServerCenter {
 	private ArrayList<ServerChat> sList = new ArrayList<>();
-	private DAOCenter dc = new DAOCenter();
+	private DAOCenter dc = DAOCenter.getInstance();
 	private String[] check = null;
+	ServerChat chat = null;
+	//private static ServerCenter sc;
+
+	public ServerCenter() {
+
+	}
+
+//	public static ServerCenter getInstance() {
+//		if (sc == null) {
+//			new ServerCenter();
+//		}
+//		return sc;
+//	}
 
 	public void addServerChat(ServerChat s) {
 		this.sList.add(s);
 	}
 
-	public void select(Object objectMember, Object msg) {
+	public void select(Object objectMember) {
 
-		System.out.println("서버센터"+objectMember);
-		System.out.println(msg);
-		
 //		check = (String[]) objectMember;
 //		for (int i = 0; i < check.length; i++) {
 //			if (check[check.length - 1].equals("login")) { // 로그인 체크
@@ -32,23 +42,15 @@ public class ServerCenter {
 //				System.out.println(check[i]);
 //				System.out.println("이건중복체크지롱  : " + check[check.length - 1]);
 //			}
-			dc = new DAOCenter();
-			dc.whichone(objectMember,msg);
+		dc.whichone(objectMember);
 
-		//}
-		//String m = "member";
-		// System.out.println(objectMember);
+		// }
+	}
 
-		//dc.whichone(objectMember, m);
-
-//			      Object Object_Array[] = new Object[100];
-//
-//			      String String_Array[] = Arrays.copyOf(Object_Array, Object_Array.length, String[].class);
-//			      for (int i = 0; i < String_Array.length; i++) {
-//			         String_Array[i] = Object_Array[i].toString();
-//			         System.out.println(String_Array[i]);
-//			      }
-//			   }
+	public void goSC(String msg) {
+		System.out.println("여기는 서버센터야 오바 : "+msg);
+		chat = new ServerChat(null, null);
+		chat.send(msg);
 	}
 
 }

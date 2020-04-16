@@ -1,10 +1,11 @@
 package Server;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -21,13 +22,49 @@ public class ServerChat extends Thread {
 		this.withClient = withClient;
 		this.sc = sc;
 		// streamSet();
+		// receive(msg);
 	}
 
 	@Override
 	public void run() {
 		streamSet();
-		// receive();
+		send(msg);
 		// send();
+	}
+
+	public void send(String msg) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						if (msg != null) {
+							System.out.println("여기는 서버챗인데 받은 메세지를 확인해볼것이야 : " + msg);
+							sendMsg = withClient.getOutputStream();
+							System.out.println("이번엔 어디까지 간거니??");
+							sendMsg.write(msg.getBytes());
+							System.out.println("서버에서 메세지를 보냈어요");
+						}
+					}
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			ObjectOutputStream oos = new ObjectOutputStream(baos);
+//			oos.writeObject(msg);
+//
+//			byte[] bowl = baos.toByteArray();
+//
+//			sendMsg = withClient.getOutputStream();
+//
+//			sendMsg.write(bowl);
+//			System.out.println("보내기 완료");
+
+				}
+
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}).start();
+
 	}
 
 	public void streamSet() {
@@ -41,29 +78,25 @@ public class ServerChat extends Thread {
 						byte[] reBuffer = new byte[1024];
 						reMsg.read(reBuffer);
 
-//						String msg = new String(reBuffer);
-//						msg = msg.trim();
-//						System.out.println("구별자 왔는지 확인 : "+msg);
-//						
 						ByteArrayInputStream bais = new ByteArrayInputStream(reBuffer);
 
 						ObjectInputStream ois = new ObjectInputStream(bais);
 
 						Object o = ois.readObject();
+
 						if (o != null) {
 							check = (String[]) o;
-							String msg = String.valueOf(reBuffer);
-							System.out.println("메세지 온거 형변환해서 확인중 : "+msg);
 							for (int i = 0; i < check.length; i++) {
 								System.out.println(check[i]);
 								id = check[0];
 							}
-							String txt = "정상접속 되었습니다.";
-							sendMsg = withClient.getOutputStream();
-							sendMsg.write(txt.getBytes());
-							sc.select(check, msg);
+							sc.select(check);
 
+//							String txt = "정상접속 되었습니다.";
+//							sendMsg = withClient.getOutputStream();
+//							sendMsg.write(txt.getBytes());
 						}
+
 						InetAddress c_ip = withClient.getInetAddress();
 						String ip = c_ip.getHostAddress();
 

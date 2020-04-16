@@ -8,7 +8,6 @@ import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -22,7 +21,7 @@ public class Login extends JFrame implements ActionListener, Serializable {
 	ClientChat client = null;
 
 	Login(ClientChat client) {
-		super("장바구니");
+		super("로그인");
 		this.client = client;
 		createpanel();
 		setClose();
@@ -84,9 +83,8 @@ public class Login extends JFrame implements ActionListener, Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String[] check = { idField.getText(), pwdField.getText()};
-					String mm ="login";
-					//client.streamSet(check, mm);
+					String[] check = { idField.getText(), pwdField.getText(), "login" };
+					client.streamSet(check);
 
 				} catch (Exception e1) {
 					e1.printStackTrace();

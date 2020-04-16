@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +32,7 @@ public class Signup extends JFrame {
 	private JTextField tfAddress;
 	private JTextField tfPhone;
 	private static ClientChat ch = null;
+	String msg = null;
 
 	/**
 	 * Launch the application.
@@ -55,7 +57,7 @@ public class Signup extends JFrame {
 		createbtn();
 		jbchk();
 		Pwdchk();
-		complete();
+		complete(msg);
 	}
 
 	private void createjlabel() {
@@ -123,7 +125,7 @@ public class Signup extends JFrame {
 		tfName.setBounds(159, 156, 186, 35);
 		contentPane.add(tfName);
 
-		tfpwd = new JTextField();
+		tfpwd = new JPasswordField();
 		tfpwd.setColumns(10);
 		tfpwd.setBounds(159, 203, 186, 35);
 		contentPane.add(tfpwd);
@@ -177,7 +179,7 @@ public class Signup extends JFrame {
 				String[] specialtxt = { "!", "@", "#", "$", "%", "^", "&", "*" };
 				for (int i = 0; i < specialtxt.length; i++) {
 					if (tfpwd.getText().indexOf(specialtxt[i]) == -1) { // 특수문자 없음
-						System.out.print(specialtxt[i]);
+						// System.out.print(specialtxt[i]);
 						if (tfpwd.getText().length() < 8 && tfpwd.getText().length() >= 1) {
 							chkpwd.setText("특수문자X 8글자 이하입니다.");
 							chkpwd.setForeground(new Color(153, 000, 000));
@@ -185,7 +187,6 @@ public class Signup extends JFrame {
 							chkpwd.setText("특수문자X 8글자 이상입니다.");
 							chkpwd.setForeground(new Color(153, 000, 000));
 						}
-
 					} else if (tfpwd.getText().indexOf(specialtxt[i]) != -1) {
 						if (tfpwd.getText().length() < 8 && tfpwd.getText().length() >= 1) {
 							chkpwd.setText("특수문자O 8글자 이하입니다.");
@@ -227,11 +228,11 @@ public class Signup extends JFrame {
 				// member.setId(tfUsername.getText());
 
 				try {
-					String[] check = {tfUsername.getText()};
-					String mm ="check";
-					
-					//ch.streamSet(check,mm);
-					
+					String[] check = { tfUsername.getText(), "check" };
+					String mm = "check";
+
+					ch.streamSet(check);
+
 					// MemberDAO dao = MemberDAO.getInstance();
 					// Boolean result = dao.idchk(member);
 //					if (result) {
@@ -251,7 +252,7 @@ public class Signup extends JFrame {
 		});
 	}
 
-	private void complete() {
+	public void complete(String msg) {
 		joinCompleteBtn = new JButton("회원가입완료");
 		joinCompleteBtn.setBounds(130, 440, 139, 29);
 		contentPane.add(joinCompleteBtn);
@@ -261,22 +262,20 @@ public class Signup extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// MemberDTO member = new MemberDTO();
-				// member.setId(tfUsername.getText());
-				// member.setName(tfName.getText());
-				// member.setPwd(tfpwd.getText());
-				// member.setAdr(tfAddress.getText());
-				// member.setCell(tfPhone.getText());
 
-				String[] check = { tfUsername.getText(), 
-						tfName.getText(),
-						tfpwd.getText(), 
-						tfAddress.getText(),
-						tfPhone.getText()
-						};
-				String mm ="join";
-				ch.streamSet(check,mm);
+				String[] check = { tfUsername.getText(), tfName.getText(), tfpwd.getText(), tfAddress.getText(),
+						tfPhone.getText(), "join" };
 
+				ch.streamSet(check);
+				// if (msg != null) {
+				if (msg.equals("yes")) {
+					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+					dispose();
+				} else if (msg.equals("no")) {
+					JOptionPane.showMessageDialog(null, "회원가입이 실패하였습니다.");
+					dispose();
+				}
+				// }
 //				if (result) {
 //					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
 //					dispose();
