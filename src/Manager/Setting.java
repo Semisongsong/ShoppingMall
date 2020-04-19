@@ -1,6 +1,5 @@
 package Manager;
 
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -9,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,6 +23,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import Client.ClientChat;
+import Client.MsCenter;
 
 public class Setting extends JFrame {
 
@@ -51,15 +51,18 @@ public class Setting extends JFrame {
 	ManagementDAO dao = ManagementDAO.getInstance();
 	ManagementDTO dto = null;
 	ArrayList<String[]> initList = null;
+	ClientChat ch = null;
+	MsCenter mc = null;
 
-	public Setting() {
+	public Setting(ClientChat ch) {
 		super("관리자 설정");// super의 생성자 호출
+		this.ch = ch;
 		Dimension size = new Dimension(600, 400);
 		createpanel();
 		createtb();
 		tablesetting();
 
-//		init();
+		init();
 
 		this.setLocation(300, 300);
 		this.setSize(size);
@@ -69,12 +72,12 @@ public class Setting extends JFrame {
 
 	}
 
-//	private void init() {
-//		initList = dao.getList();
-//		for (int i = 0; i < initList.size(); i++) {
-//			tablemodel.addRow(initList.get(i));
-//		}
-//	}
+	private void init() {
+		initList = dao.getList();
+		for (int i = 0; i < initList.size(); i++) {
+			tablemodel.addRow(initList.get(i));
+		}
+	}
 
 	public void tablesetting() {
 		table.setRowMargin(0);
@@ -126,13 +129,16 @@ public class Setting extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String in[] = new String[4];
+				String in[] = new String[5];
 				for (int i = 0; i < txtfield.length; i++) {
 					in[i] = txtfield[i].getText();
 					txtfield[i].setText("");
 				}
 				tablemodel.addRow(in);
-				saveToDB(in);
+				in[4] = "add";
+				MsCenter mc = new MsCenter(ch, fileName);
+				mc.allMsg(in);
+				// saveToDB(in);
 			}
 
 		});
@@ -142,14 +148,17 @@ public class Setting extends JFrame {
 		modB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String in[] = new String[4];
+				String in[] = new String[5];
 				for (int i = 0; i < txtfield.length; i++) {
 					in[i] = txtfield[i].getText();
 					txtfield[i].setText("");
 				}
 				delTableRow(modIntRow);
 				tablemodel.insertRow(modIntRow, in);
-				editToDB(in);
+				in[4] = "mod";
+				MsCenter mc = new MsCenter(ch, fileName);
+				mc.allMsg(in);
+				// editToDB(in);
 				modIntRow = -1;
 			}
 		});
@@ -165,7 +174,10 @@ public class Setting extends JFrame {
 					in[i] = txtfield[i].getText();
 					txtfield[i].setText("");
 				}
-				delToDB(in);
+				// delToDB(in);
+				in[4] = "del";
+				MsCenter mc = new MsCenter(ch, fileName);
+				mc.allMsg(in);
 				delTableRow(table.getSelectedRow());
 			}
 		});
@@ -181,7 +193,7 @@ public class Setting extends JFrame {
 				for (int i = 0; i < txtfield.length; i++) {
 					in[i] = txtfield[i].getText();
 					txtfield[i].setText("");
-					//new orderlist();
+					// new orderlist();
 				}
 
 			}
@@ -190,16 +202,16 @@ public class Setting extends JFrame {
 	}
 
 	private void saveToDB(String[] in) {
-		dto = new ManagementDTO();
+		// dto = new ManagementDTO();
 		int code = Integer.parseInt(in[0]);
-		dto.setCode(code);
-		dto.setCname(in[1]);
+		// dto.setCode(code);
+		// dto.setCname(in[1]);
 		int cnt = Integer.parseInt(in[2]);
-		dto.setCnt(cnt);
+		// dto.setCnt(cnt);
 		int price = Integer.parseInt(in[3]);
-		dto.setPrice(price);
-		dao.Insert(dto);
-
+		// dto.setPrice(price);
+		// dao.Insert(dto);
+		mc.allMsg(in);
 	}
 
 	private void editToDB(String[] in) {
@@ -247,12 +259,3 @@ public class Setting extends JFrame {
 	}
 
 }
-
-
-
-
-
-
-
-
-
