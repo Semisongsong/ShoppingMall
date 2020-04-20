@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,6 +26,8 @@ import javax.swing.table.TableColumnModel;
 
 import Client.ClientChat;
 import Client.MsCenter;
+import DB.ManagementDAO;
+import DB.ManagementDTO;
 
 public class Setting extends JFrame {
 
@@ -51,18 +54,21 @@ public class Setting extends JFrame {
 	ManagementDAO dao = ManagementDAO.getInstance();
 	ManagementDTO dto = null;
 	ArrayList<String[]> initList = null;
-	ClientChat ch = null;
+	// ClientChat ch = null;
 	MsCenter mc = null;
+	Socket withClient = null;
+	Socket withClient2 = null;
 
-	public Setting(ClientChat ch) {
+	public Setting(Socket withClient, Socket withClient2) {
 		super("관리자 설정");// super의 생성자 호출
-		this.ch = ch;
+		this.withClient = withClient;
+		this.withClient2 = withClient2;
 		Dimension size = new Dimension(600, 400);
 		createpanel();
 		createtb();
 		tablesetting();
 
-		init();
+		start();
 
 		this.setLocation(300, 300);
 		this.setSize(size);
@@ -70,10 +76,22 @@ public class Setting extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
 
+		init(initList, withClient2);
 	}
 
-	private void init() {
-		initList = dao.getList();
+	public void start() {
+		String msg = "리스트줘";
+		this.withClient2=withClient;
+		mc = new MsCenter(withClient, withClient2);
+		mc.list(msg, withClient2);
+	}
+
+	public void init(ArrayList<String[]> list, Socket withClient) {
+//		String msg ="리스트줘";
+//		mc = new MsCenter(withClient, withClient2);
+//		mc.list(msg);
+		initList = list;
+		// this.withClient2=withClient2;
 		for (int i = 0; i < initList.size(); i++) {
 			tablemodel.addRow(initList.get(i));
 		}
@@ -96,7 +114,7 @@ public class Setting extends JFrame {
 						txtfield[i].setText((String) table.getValueAt(modIntRow, i));
 					}
 					modIntRow = table.getSelectedRow();
-					tfield.setText((String) table.getValueAt(modIntRow, 5));
+					// tfield.setText((String) table.getValueAt(modIntRow, 5));
 				}
 				if (e.getClickCount() == 2) {// 왼쪽 더블 클릭
 
@@ -136,7 +154,7 @@ public class Setting extends JFrame {
 				}
 				tablemodel.addRow(in);
 				in[4] = "add";
-				MsCenter mc = new MsCenter(ch, fileName);
+				MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				// saveToDB(in);
 			}
@@ -156,7 +174,7 @@ public class Setting extends JFrame {
 				delTableRow(modIntRow);
 				tablemodel.insertRow(modIntRow, in);
 				in[4] = "mod";
-				MsCenter mc = new MsCenter(ch, fileName);
+				MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				// editToDB(in);
 				modIntRow = -1;
@@ -169,14 +187,14 @@ public class Setting extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String in[] = new String[4];
+				String in[] = new String[5];
 				for (int i = 0; i < txtfield.length; i++) {
 					in[i] = txtfield[i].getText();
 					txtfield[i].setText("");
 				}
 				// delToDB(in);
 				in[4] = "del";
-				MsCenter mc = new MsCenter(ch, fileName);
+				MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				delTableRow(table.getSelectedRow());
 			}
@@ -199,43 +217,6 @@ public class Setting extends JFrame {
 			}
 		});
 
-	}
-
-	private void saveToDB(String[] in) {
-		// dto = new ManagementDTO();
-		int code = Integer.parseInt(in[0]);
-		// dto.setCode(code);
-		// dto.setCname(in[1]);
-		int cnt = Integer.parseInt(in[2]);
-		// dto.setCnt(cnt);
-		int price = Integer.parseInt(in[3]);
-		// dto.setPrice(price);
-		// dao.Insert(dto);
-		mc.allMsg(in);
-	}
-
-	private void editToDB(String[] in) {
-		dto = new ManagementDTO();
-		int code = Integer.parseInt(in[0]);
-		dto.setCode(code);
-		dto.setCname(in[1]);
-		int cnt = Integer.parseInt(in[2]);
-		dto.setCnt(cnt);
-		int price = Integer.parseInt(in[3]);
-		dto.setPrice(price);
-		dao.editinfo(dto);
-	}
-
-	private void delToDB(String[] in) {
-		dto = new ManagementDTO();
-		int code = Integer.parseInt(in[0]);
-		dto.setCode(code);
-		dto.setCname(in[1]);
-		int cnt = Integer.parseInt(in[2]);
-		dto.setCnt(cnt);
-		int price = Integer.parseInt(in[3]);
-		dto.setPrice(price);
-		dao.delinfo(dto);
 	}
 
 	private void delTableRow(int row) {

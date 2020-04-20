@@ -10,9 +10,10 @@ public class ServerCenter {
 	private DAOCenter dc = DAOCenter.getInstance();
 	private String[] check = null;
 	private ServerChat chat = null;
+	private Socket withClient = null;
+	private Socket withClient2 = null;
 	// private static ServerCenter sc;
 
-	
 	public ServerCenter() {
 
 	}
@@ -28,8 +29,10 @@ public class ServerCenter {
 		this.sList.add(s);
 	}
 
-	public void select(Object objectMember, ServerChat chat) {
-		chat=chat;
+	public void select(Object objectMember, Socket withClient, Socket withClient2) {
+		chat = chat;
+		this.withClient = withClient;
+		this.withClient2 = withClient2;
 //		check = (String[]) objectMember;
 //		for (int i = 0; i < check.length; i++) {
 //			if (check[check.length - 1].equals("login")) { // 로그인 체크
@@ -44,14 +47,29 @@ public class ServerCenter {
 //				System.out.println(check[i]);
 //				System.out.println("이건중복체크지롱  : " + check[check.length - 1]);
 //			}
-		dc.whichone(objectMember,chat);
-
+		dc.whichone(objectMember, withClient, withClient2);
 		// }
 	}
 
-	public void goSC(String msg) {
+	public void select(String msg, Socket withClient, Socket withClient2) {
+		this.withClient = withClient;
+		this.withClient2 = withClient2;
+		dc.list(msg,withClient2);
+		//ArrayList<String[]> list = dc.list();
+		//goSC2(list,withClient2);
+	}
+
+	public void goSC(String msg, Socket withClient) {
 		System.out.println("여기는 서버센터야 오바 : " + msg);
-		chat.send(msg);
+		chat = new ServerChat(withClient, withClient2, null);
+		chat.send(msg, withClient);
+	}
+
+	public void goSC2(ArrayList<String[]> list, Socket withClient) {
+		this.withClient2=withClient;
+		System.out.println("여기는 서버센터야 오바 리스트는 넘어왔니?? : " + list);
+		chat = new ServerChat(withClient, withClient2, null);
+		chat.send2(list, withClient2);
 	}
 
 }

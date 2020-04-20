@@ -35,13 +35,16 @@ public class Signup extends JFrame {
 	private static ClientChat ch = null;
 	String msg = null;
 	Socket chh = null;
-
+	private static Signup join = null;
+	private MsCenter mc = null;
+	static Socket withClient = null;
+	Socket withClient2 = null;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Signup frame = new Signup(ch);
+		Signup frame = new Signup(withClient);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -53,18 +56,21 @@ public class Signup extends JFrame {
 		});
 	}
 
-	public Signup(ClientChat withServer) {
-		this.ch = withServer;
+	public Signup(Socket withClient) {
+		this.withClient = withClient;
 		createjlabel();
 		createtxtfield();
 		createbtn();
-		jbchk();
+		jbchk(msg);
 		Pwdchk();
 		complete();
 	}
 
-//	public Signup(Runnable runnable) {
-//		// TODO Auto-generated constructor stub
+//	public static Signup getInstance() {
+//		if (join == null) {
+//			join = new Signup(ch);
+//		}
+//		return join;
 //	}
 
 	private void createjlabel() {
@@ -222,7 +228,7 @@ public class Signup extends JFrame {
 
 	}
 
-	private void jbchk() {
+	public void jbchk(String msg) {
 		btnjb = new JButton("중복확인");
 		btnjb.setBounds(350, 110, 100, 30);
 		contentPane.add(btnjb);
@@ -231,24 +237,24 @@ public class Signup extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// MemberDTO member = new MemberDTO();
-				// member.setId(tfUsername.getText());
 
 				try {
 					String[] check = { tfUsername.getText(), "check" };
 					String mm = "check";
 
-					ch.streamSet(check);
+					// ch.streamSet(check);
+					mc = new MsCenter(withClient, withClient2);
+					mc.allMsg(check);
 
-					// MemberDAO dao = MemberDAO.getInstance();
-					// Boolean result = dao.idchk(member);
-//					if (result) {
+//					mc = new MsCenter(ch, mm);
+//					String msg = mc.allMsg(check);
+//					if (msg.equals("check/yes")) {
+//						JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
+//						setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//					} else if (msg.equals("check/no")) {
 //						JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
 //						setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //						tfUsername.setText("");
-//					} else {
-//						JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
-//						setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -258,16 +264,20 @@ public class Signup extends JFrame {
 
 		});
 	}
-	
-	public void idchk(String msg) {
+
+	public boolean idchk(String msg) {
+		boolean result = true;
 		if (msg.equals("check/yes")) {
 			JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			return false;
 		} else if (msg.equals("check/no")) {
 			JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			tfUsername.setText("");
+			return result;
 		}
+		return rootPaneCheckingEnabled;
 	}
 
 	public void complete() {
@@ -284,7 +294,10 @@ public class Signup extends JFrame {
 				String[] check = { tfUsername.getText(), tfName.getText(), tfpwd.getText(), tfAddress.getText(),
 						tfPhone.getText(), "join" };
 
-				ch.streamSet(check);
+				// ch.streamSet(check);
+				mc = new MsCenter(withClient, withClient2);
+				mc.allMsg(check);
+
 				// if (msg != null) {
 //				if (msg.equals("yes")) {
 //					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
@@ -298,7 +311,7 @@ public class Signup extends JFrame {
 		});
 
 	}
-	
+
 	public void membercheck(String msg) {
 		if (msg.equals("member/yes")) {
 			JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
@@ -308,6 +321,5 @@ public class Signup extends JFrame {
 			dispose();
 		}
 	}
-	
-	
+
 }
