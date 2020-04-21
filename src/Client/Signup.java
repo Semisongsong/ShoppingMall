@@ -36,7 +36,7 @@ public class Signup extends JFrame {
 	String msg = null;
 	Socket chh = null;
 	private static Signup join = null;
-	private MsCenter mc = null;
+	private MsCenter mc = MsCenter.getInstance();
 	static Socket withClient = null;
 	Socket withClient2 = null;
 
@@ -243,7 +243,7 @@ public class Signup extends JFrame {
 					String mm = "check";
 
 					// ch.streamSet(check);
-					mc = new MsCenter(withClient, withClient2);
+					//mc = new MsCenter(ch);
 					mc.allMsg(check);
 
 //					mc = new MsCenter(ch, mm);
@@ -295,7 +295,7 @@ public class Signup extends JFrame {
 						tfPhone.getText(), "join" };
 
 				// ch.streamSet(check);
-				mc = new MsCenter(withClient, withClient2);
+				//mc = new MsCenter(ch);
 				mc.allMsg(check);
 
 				// if (msg != null) {

@@ -58,6 +58,7 @@ public class Setting extends JFrame {
 	MsCenter mc = null;
 	Socket withClient = null;
 	Socket withClient2 = null;
+	private ClientChat ch;
 
 	public Setting(Socket withClient, Socket withClient2) {
 		super("관리자 설정");// super의 생성자 호출
@@ -68,7 +69,7 @@ public class Setting extends JFrame {
 		createtb();
 		tablesetting();
 
-		start();
+		start(withClient2);
 
 		this.setLocation(300, 300);
 		this.setSize(size);
@@ -79,11 +80,11 @@ public class Setting extends JFrame {
 		init(initList, withClient2);
 	}
 
-	public void start() {
-		String msg = "리스트줘";
-		this.withClient2=withClient;
-		mc = new MsCenter(withClient, withClient2);
-		mc.list(msg, withClient2);
+	public void start(Socket withClient) {
+		String msg = "리스트를 요청하겠습니다";
+		//this.withClient2=withClient2;
+		mc = new MsCenter(ch);
+		mc.list(msg, withClient);
 	}
 
 	public void init(ArrayList<String[]> list, Socket withClient) {
@@ -154,7 +155,7 @@ public class Setting extends JFrame {
 				}
 				tablemodel.addRow(in);
 				in[4] = "add";
-				MsCenter mc = new MsCenter(withClient, withClient2);
+				//MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				// saveToDB(in);
 			}
@@ -174,7 +175,7 @@ public class Setting extends JFrame {
 				delTableRow(modIntRow);
 				tablemodel.insertRow(modIntRow, in);
 				in[4] = "mod";
-				MsCenter mc = new MsCenter(withClient, withClient2);
+				//MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				// editToDB(in);
 				modIntRow = -1;
@@ -194,7 +195,7 @@ public class Setting extends JFrame {
 				}
 				// delToDB(in);
 				in[4] = "del";
-				MsCenter mc = new MsCenter(withClient, withClient2);
+				//MsCenter mc = new MsCenter(withClient, withClient2);
 				mc.allMsg(in);
 				delTableRow(table.getSelectedRow());
 			}

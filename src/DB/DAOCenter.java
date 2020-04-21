@@ -179,7 +179,7 @@ public class DAOCenter implements DAOInterface {
 	}
 
 	public ArrayList<String[]> list(String msg, Socket withClient2) {
-		this.withClient2=withClient2;
+		this.withClient=withClient;
 		ArrayList<String[]> gList = gDao.getList();
 		//chat = new ServerChat(withClient, withClient, sc);
 		//chat.send2(gList);

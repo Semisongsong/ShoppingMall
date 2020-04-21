@@ -24,14 +24,17 @@ public class Login extends JFrame implements ActionListener, Serializable {
 	JTextField idField, pwdField, loginField;
 	JButton loginBtn, joinBtn;
 	Socket client = null;
-	MsCenter mc = null;
+	private static MsCenter mc = MsCenter.getInstance();
 	Socket withClient = null;
 	Socket withClient2 = null;
 	private String msg;
+	ClientChat ch = null;
 
-	Login(Socket withClient) {
+	Login(ClientChat ch) {
 		super("로그인");
-		this.withClient = withClient;
+		this.ch=ch;
+		//this.withClient = withClient;
+		//this.withClient2 = withClient2;
 		createpanel();
 		setClose();
 	}
@@ -93,10 +96,16 @@ public class Login extends JFrame implements ActionListener, Serializable {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String[] check = { idField.getText(), pwdField.getText(), "login" };
-					mc = new MsCenter(withClient, withClient2);
-					mc.allMsg(check);
-					// client.streamSet(check);
-//					int go = loginresult(msg);
+					//mc = new MsCenter(ch);
+
+					String msgg = mc.allMsg(check);
+//					if(mc.getMsg()!=null) {
+//					loginresult(mc.getMsg());
+//					}
+//					client.streamSet(check);
+					// msgg=msg;
+					// msgg=mc.getMsg();
+//					int go = loginresult(mc.getMsg());
 //					if (go == 1) {
 //						JOptionPane.showMessageDialog(null, "로그인 완료");
 //						System.out.println("쇼핑몰고고");
@@ -129,13 +138,15 @@ public class Login extends JFrame implements ActionListener, Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Signup join = Signup.getInstance();
-				new Signup(client);
+				new Signup(withClient);
 			}
 
 		});
 	}
 
 	public int loginresult(String msg) {
+		// this.withClient2=withClient2;
+		// msg = mc.getMsg();
 		if (msg.contains("login/yes/1")) {
 			JOptionPane.showMessageDialog(null, "로그인 완료");
 			new Shoppingmall();
@@ -143,10 +154,10 @@ public class Login extends JFrame implements ActionListener, Serializable {
 			return 1;
 		} else if (msg.contains("login/yes/5")) {
 			JOptionPane.showMessageDialog(null, "로그인 완료");
-			new Setting(withClient,withClient2);
+			new Setting(withClient, withClient2);
 			System.out.println("세팅고고");
 			return 5;
-		} else if (msg.contains("login/yes/10")) {
+		} else if (msg.contains("login/no")) {
 			JOptionPane.showMessageDialog(null, "존재하지 않는 아이디거나 비밀번호가 맞지 않습니다.");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			idField.setText("");

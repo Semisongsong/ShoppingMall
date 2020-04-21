@@ -59,13 +59,13 @@ public class ServerChat extends Thread {
 		}).start();
 	}
 
-	public void send2(ArrayList<String[]> gList, Socket withClient2) {
-		this.withClient2=withClient2;
+	public void send2(ArrayList<String[]> gList, Socket withClient) {
+		this.withClient = withClient;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					if (msg != null) {
+					if (gList != null) {
 						ByteArrayOutputStream baos = new ByteArrayOutputStream();
 						ObjectOutputStream oos = new ObjectOutputStream(baos);
 						oos.writeObject(gList);
@@ -130,7 +130,7 @@ public class ServerChat extends Thread {
 	}
 
 	public void recieve() {
-		this.withClient2=withClient;
+		this.withClient = withClient;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -144,7 +144,6 @@ public class ServerChat extends Thread {
 						msg = msg.trim();
 						System.out.println("클라이언트에서 메세지를 받았어요." + msg);
 						sc.select(msg, withClient, withClient2);
-
 					}
 				} catch (Exception e) {
 					// TODO: handle exception

@@ -54,7 +54,7 @@ public class ServerCenter {
 	public void select(String msg, Socket withClient, Socket withClient2) {
 		this.withClient = withClient;
 		this.withClient2 = withClient2;
-		dc.list(msg,withClient2);
+		dc.list(msg,withClient);
 		//ArrayList<String[]> list = dc.list();
 		//goSC2(list,withClient2);
 	}
@@ -65,11 +65,14 @@ public class ServerCenter {
 		chat.send(msg, withClient);
 	}
 
-	public void goSC2(ArrayList<String[]> list, Socket withClient) {
-		this.withClient2=withClient;
+	public void goSC2(ArrayList<String[]> list, Socket withClient2) {
+		this.withClient=withClient;
 		System.out.println("여기는 서버센터야 오바 리스트는 넘어왔니?? : " + list);
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.println(list.get(i));
+//		}
 		chat = new ServerChat(withClient, withClient2, null);
-		chat.send2(list, withClient2);
+		chat.send2(list, withClient);
 	}
 
 }
